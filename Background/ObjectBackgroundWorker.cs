@@ -89,7 +89,7 @@ namespace Background
 
                     if (typeof(TaskSettings) == typeof(TaskSettings))
                     {
-                        await Task.Delay(((TaskSettings)(object)itemToProcess).DelayMilliSeconds, stoppingToken);
+                        await Task.Delay(((TaskSettings)(object)itemToProcess)?.DelayMilliSeconds ?? 500, stoppingToken);
                     }
                     else
                     {
