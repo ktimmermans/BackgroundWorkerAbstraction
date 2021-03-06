@@ -1,6 +1,6 @@
 ﻿namespace Background.Interfaces
 {
-    public interface IObjectBackgroundQueue<T>
+    public interface IObjectBackgroundQueue<T> : IBackgroundQueue
     {
         /// <summary>
         /// Schedules a task which needs to be processed.

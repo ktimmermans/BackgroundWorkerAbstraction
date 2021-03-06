@@ -1,13 +1,13 @@
 ﻿using Background.Interfaces;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace Background
 {
     public class ObjectBackgroundQueue<T> : IObjectBackgroundQueue<T> where T : class
     {
         private readonly ConcurrentQueue<T> _items = new ConcurrentQueue<T>();
-
 
         /// <summary>
         /// Enqueue a task that is supposed to process an object
@@ -17,6 +17,10 @@ namespace Background
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
+            if (item.GetType().BaseType == typeof(TaskSettings))
+            {
+                ((TaskSettings)(object)item).SentToQueue();
+            }
             _items.Enqueue(item);
         }
 
@@ -31,6 +35,25 @@ namespace Background
             return success
                 ? workItem
                 : null;
+        }
+
+        /// <summary>
+        /// Return all tasks current in the queue (a copy)
+        /// </summary>
+        /// <returns>A list of copies of the tasks currently in the queue</returns>
+        public IEnumerable<TaskSettings> GetAllTasksForQueue()
+        {
+            foreach (var t in this._items.ToArray())
+            {
+                if (t.GetType().BaseType == typeof(TaskSettings))
+                {
+                    yield return (TaskSettings)(object)t;
+                }
+                else
+                {
+                    yield return null;
+                }
+            }
         }
     }
 }
