@@ -1,0 +1,2 @@
+# BackgroundWorkerAbstraction
+Abstraction layer for the DependencyInjection Backgroundworker class
