@@ -16,7 +16,7 @@ within that function the scope can be used to retreive required services from DI
 var _testService = scope.ServiceProvider.GetRequiredService<ITestService>();
   
 2. Add the IObjectBackgroundQueue service to DI:
-services.AddSingleton<IObjectBackgroundQueue<TestClass>, ObjectBackgroundQueue<TestClass>>();
+services.TestBackgroundService<TestClass>();
 
 3. Add the background worker process to DI:
 services.AddHostedService<TestBackgroundService>()
@@ -32,10 +32,17 @@ within that function the scope can be used to retreive required services from DI
 var _testService = scope.ServiceProvider.GetRequiredService<ITestService>();
   
 3. Add the IObjectBackgroundQueue service to DI:
-services.AddSingleton<IObjectBackgroundQueue<TestTaskDescriptor>, ObjectBackgroundQueue<TestTaskDescriptor>>();
+services.TestBackgroundService<TestTaskDescriptor>();
   
 4. Add the background worker process to DI:
 services.AddHostedService<TestBackgroundService>();
   
 The TaskSettings class contains a DelayMilliSeconds property which if set will set the delay on picking up the next task. If not set this defaults to 500ms.
 This will also work for the ObjectBackgroundWorker (make your object extend the TaskSettings class to use it)
+
+# Taskmanager
+Simply add it to the DI:
+services.AddScoped<IBackgroundTaskManager, BackgroundTaskManager>();
+
+inject it in any of your own services and retreive current tasks by:
+var currentQueues = this._taskManager.GetCurrentBackgroundTasks();
