@@ -1,7 +1,9 @@
-﻿using Background.Interfaces;
+﻿using BackgroundWorker.Abstractions;
+using BackgroundWorker.TaskManager;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
-namespace Background
+namespace BackgroundWorker
 {
     public static class ServiceExtensions
     {
@@ -11,6 +13,13 @@ namespace Background
 
             // Add reference so that the manager can find them
             services.AddSingleton<IBackgroundQueue>(x => x.GetRequiredService<IObjectBackgroundQueue<T>>());
+
+            return services;
+        }
+
+        public static IServiceCollection AddTaskManager(this IServiceCollection services)
+        {
+            services.AddTransient<IBackgroundTaskManager, BackgroundTaskManager>();
 
             return services;
         }
