@@ -18,6 +18,47 @@ namespace BackgroundWorker.TaskManager
             this._serviceProvider = serviceProvider;
         }
 
+        public int GetTotalAmountOfCurrentBackgroundTasks(Type taskType)
+        {
+            int amountOfTasks = 0;
+
+            foreach (var bs in this._backgroundServices)
+            {
+                if (bs.GetTypeOfQueue() == taskType)
+                {
+                    amountOfTasks += bs.GetAmountOfTasks();
+                }
+            }
+
+            return amountOfTasks;
+        }
+
+        public int GetTotalAmountOfCurrentBackgroundTasks()
+        {
+            int amountOfTasks = 0;
+
+            foreach (var bs in this._backgroundServices)
+            {
+                amountOfTasks += bs.GetAmountOfTasks();
+            }
+
+            return amountOfTasks;
+        }
+
+        public IEnumerable<TaskSettings> GetCurrentBackgroundTasksForQueue(Type taskType)
+        {
+            List<TaskSettings> queuedTasks = new List<TaskSettings>();
+            foreach (var bs in this._backgroundServices)
+            {
+                if (bs.GetTypeOfQueue() == taskType)
+                {
+                    queuedTasks.AddRange(bs.GetAllTasksForQueue());
+                }
+            }
+
+            return queuedTasks;
+        }
+
         public IEnumerable<TaskSettings> GetCurrentBackgroundTasks()
         {
             List<TaskSettings> queuedTasks = new List<TaskSettings>();

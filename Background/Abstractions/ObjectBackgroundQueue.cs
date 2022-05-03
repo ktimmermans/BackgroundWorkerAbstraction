@@ -53,6 +53,24 @@ namespace BackgroundWorker.Abstractions
             return this._sortedItems.OrderBy(x => x.Key).Select(x => this.ConvertToTaskSettings(x.Value));
         }
 
+        /// <summary>
+        /// Returns the total amount of tasks yet to be done over all queues
+        /// </summary>
+        /// <returns>an integer number of tasks to be done</returns>
+        public int GetAmountOfTasks()
+        {
+            return this._sortedItems.Count;
+        }
+
+        /// <summary>
+        /// Returns the object type of the queue
+        /// </summary>
+        /// <returns>The object type of the queue</returns>
+        public Type GetTypeOfQueue()
+        {
+            return typeof(T);
+        }
+
         private TaskSettings ConvertToTaskSettings<T>(T objectToConvert)
         {
             if (this.IsTaskType())
