@@ -7,5 +7,9 @@ namespace BackgroundWorker.Abstractions
     public interface IBackgroundQueue
     {
         IEnumerable<TaskSettings> GetAllTasksForQueue();
+
+        int GetAmountOfTasks();
+
+        public Type GetTypeOfQueue();
     }
 }

@@ -1,7 +1,9 @@
-﻿using BackgroundWorker.Abstractions;
+﻿using Backgroundworker.Exceptions;
+using BackgroundWorker.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BackgroundWorker.TaskManager
 {
@@ -16,6 +18,43 @@ namespace BackgroundWorker.TaskManager
         {
             this._backgroundServices = backgroundServices;
             this._serviceProvider = serviceProvider;
+        }
+
+        public int GetTotalAmountOfSpecificTask(Type taskType)
+        {
+            var backgroundTask = this._backgroundServices.FirstOrDefault(x => x.GetTypeOfQueue() == taskType);
+
+            if (backgroundTask == null)
+            {
+                throw new UnknownQueueException($"No queue for type: {taskType} was found");
+            }
+
+            return backgroundTask.GetAmountOfTasks();
+        }
+
+        public int GetTotalAmountOfCurrentBackgroundTasks()
+        {
+            int amountOfTasks = 0;
+
+            foreach (var bs in this._backgroundServices)
+            {
+                amountOfTasks += bs.GetAmountOfTasks();
+            }
+
+            return amountOfTasks;
+        }
+
+        public IEnumerable<TaskSettings> GetCurrentBackgroundTasksForQueue(Type taskType)
+        {
+            var backgroundTask = this._backgroundServices.FirstOrDefault(x => x.GetTypeOfQueue() == taskType);
+
+            if (backgroundTask == null)
+            {
+                throw new UnknownQueueException($"No queue for type: {taskType} was found");
+            }
+
+
+            return backgroundTask.GetAllTasksForQueue();
         }
 
         public IEnumerable<TaskSettings> GetCurrentBackgroundTasks()
@@ -38,7 +77,7 @@ namespace BackgroundWorker.TaskManager
             }
             catch (Exception ex)
             {
-                throw new Exception($"Task could not be added because its type was unknown, Did you register the correct provider?");
+                throw new UnknownQueueException($"Task could not be added because its type was unknown, Did you register the correct provider?");
             }
         }
     }
