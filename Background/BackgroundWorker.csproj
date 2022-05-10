@@ -6,9 +6,9 @@
     <Authors>Koen Timmermans</Authors>
     <Company />
     <Product>BackgroundWorker.Abstractions</Product>
-    <Description>Throw UnknownQueueException when a queue for a specific task could not be found instead of just returning empty results</Description>
+    <Description></Description>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <Version>1.1.1-beta-07</Version>
+    <Version>1.1.2</Version>
     <RepositoryUrl>https://github.com/ktimmermans/BackgroundWorkerAbstraction</RepositoryUrl>
     <PackageProjectUrl>https://github.com/ktimmermans/BackgroundWorkerAbstraction</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
